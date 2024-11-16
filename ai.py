@@ -77,6 +77,29 @@ architecture_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
+architecture_documentation_prompt = ChatPromptTemplate.from_messages(
+    [
+        SystemMessagePromptTemplate.from_template(
+            """You are a documentation generator that produces clear, concise documentation based on the given requirements. 
+            Requirements for the generated documentation:
+            1. Include a brief description of the file's purpose.
+            2. List all functions and classes with their signatures and descriptions.
+            3. Provide a summary of the dependencies required for the file.
+            4. Follow the Google Python Style Guide for docstrings.
+            5. Include only the documentation text, without any code implementation.
+            """
+        ),
+        HumanMessagePromptTemplate.from_template(
+            """Filename: {filename}
+            Architecture: {architecture}
+            Context: {context}
+    Purpose: {purpose}
+    Functions: {functions}
+    Dependencies: {dependencies}"""
+        ),
+    ]
+)
+
 file_structure_prompt = ChatPromptTemplate.from_messages(
     [
         SystemMessagePromptTemplate.from_template(
@@ -132,6 +155,27 @@ code_generation_prompt = ChatPromptTemplate.from_messages(
         ),
     ]
 )
+
+# documentation_generation_prompt = ChatPromptTemplate.from_messages(
+#     [
+#         SystemMessagePromptTemplate.from_template(
+#             """You are a documentation generator that produces clear, concise documentation based on the given requirements.
+#             Requirements for the generated documentation:
+#             1. Include a brief description of the file's purpose.
+#             2. List all functions and classes with their signatures and descriptions.
+#             3. Provide a summary of the dependencies required for the file.
+#             4. Follow the Google Python Style Guide for docstrings.
+#             5. Include only the documentation text, without any code implementation.
+#             """
+#         ),
+#         HumanMessagePromptTemplate.from_template(
+#             """Filename: {filename}
+#     Purpose: {purpose}
+#     Functions: {functions}
+#     Dependencies: {dependencies}"""
+#         ),
+#     ]
+# )
 
 
 def create_repository(
@@ -246,6 +290,24 @@ def create_repository(
             f.write(code_out)
 
         print(f"Generated {file_info['filename']}")
+
+    # Step 4: Generate documentation for the overall architecture
+    documentation_chain = architecture_documentation_prompt | llm
+    documentation_output = documentation_chain.invoke(
+        {
+            "filename": "README.md",
+            "architecture": architecture_output["architecture"],
+            "context": arch_context_text,
+            "purpose": "Documentation for the system architecture",
+            "functions": [],
+            "dependencies": architecture_output["dependencies"],
+        }
+    )
+
+    # Write documentation to file
+    doc_path = os.path.join(output_dir, "README.md")
+    with open(doc_path, "w") as f:
+        f.write(documentation_output.content)
 
 
 if __name__ == "__main__":
