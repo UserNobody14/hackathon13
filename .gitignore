@@ -1,0 +1,6 @@
+generated_repo
+pdf_links/*
+generated_repo_output
+pdf_uploads
+__pycache__
+.env

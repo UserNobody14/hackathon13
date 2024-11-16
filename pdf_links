@@ -1,0 +1,72 @@
+https://arxiv.org/pdf/2411.09689
+
+Prompt:
+
+Develop a Python function that evaluates the alignment of a large language model's (LLM) generated response to a given prompt. The function should classify the response into one of three categories:
+
+Aligned: The LLM has sufficient knowledge to address the prompt, and the response aligns with this knowledge.
+Misaligned: The LLM has sufficient knowledge, but the response does not align with it, possibly due to sampling randomness or dependencies on previous tokens.
+Fabricated: The LLM lacks the necessary knowledge to address the prompt, leading to a response based on fabricated information.
+Requirements:
+
+Implement a zero-shot method that assesses whether the LLM possesses enough knowledge about the given prompt and response.
+Avoid using external knowledge bases, labeled datasets, or fine-tuning of the LLM.
+Test the function with various prompts and LLM-generated responses to ensure accurate classification.
+Additional Context:
+
+The function should help in identifying and categorizing hallucinations in LLM-generated text, enhancing the reliability of LLM applications.
+
+https://arxiv.org/pdf/2411.09601
+
+Prompt:
+
+Develop a Python application that leverages a Large Language Model (LLM) to assist in ontology engineering tasks. The application should facilitate the following functionalities:
+
+Ontology Modeling: Generate initial ontology structures based on domain-specific textual inputs.
+Ontology Extension and Modification: Suggest additions or modifications to existing ontologies when provided with new information.
+Ontology Alignment: Identify and align equivalent or similar concepts across different ontologies.
+Entity Disambiguation: Resolve ambiguities by determining the correct entities in a given context.
+Requirements:
+
+Utilize a pre-trained LLM (e.g., GPT-3) to process and analyze textual data.
+Implement a modular approach to handle different ontology engineering tasks, allowing for scalability and maintainability.
+Ensure the application can process various input formats, such as plain text, RDF, or OWL files.
+Provide a user-friendly interface for inputting data and viewing results, which could be a command-line interface or a simple web-based dashboard.
+Include error handling and validation mechanisms to ensure the integrity of the generated or modified ontologies.
+Additional Context:
+
+The application aims to streamline ontology engineering processes by integrating LLM capabilities, thereby reducing manual effort and enhancing accuracy in knowledge graph development.
+
+https://arxiv.org/pdf/2411.07553
+
+Prompt: 
+Develop a Python program to implement a dynamic graph orientation algorithm that maintains a graph's orientation while minimizing discrepancy during continuous updates (edge insertions and deletions). The algorithm should be efficient and ensure minimal edge reorientation (recourse) per update.
+
+Requirements:
+Graph Representation:
+
+Represent the graph using an adjacency list or similar structure to support dynamic updates.
+Track the in-degree and out-degree for each node.
+Dynamic Updates:
+
+Implement functions to add an edge and remove an edge in the graph.
+Reorient edges when necessary to maintain minimal discrepancy.
+Discrepancy Calculation:
+
+Continuously calculate the discrepancy, defined as the maximum absolute difference between the in-degree and out-degree of any node.
+Efficiency:
+
+Ensure that edge updates (insertions and deletions) are performed in O(log²(n)) or better for large graphs.
+Minimize the number of edge reorientations (recourse) during updates.
+Testing:
+
+Create a set of test cases to validate the functionality of the graph operations.
+Test for varying sequences of edge insertions and deletions, ensuring minimal discrepancy is maintained.
+Output:
+
+Provide a function to display the graph's state, including:
+Adjacency list
+In-degree and out-degree of each node
+Current discrepancy
+Additional Context:
+The goal is to efficiently manage the dynamic orientation of a graph while keeping the discrepancy as low as possible. This algorithm is critical for applications like dynamic carpooling or other resource allocation problems where balancing is essential.
