@@ -4,7 +4,6 @@ from uuid import uuid4
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain.prompts import (
     ChatPromptTemplate,
-    MessagesPlaceholder,
     HumanMessagePromptTemplate,
     SystemMessagePromptTemplate,
 )
@@ -19,6 +18,8 @@ from dotenv import load_dotenv
 # Initialize OpenTelemetry instrumentation
 from openinference.instrumentation.langchain import LangChainInstrumentor
 from phoenix.otel import register
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 
 load_dotenv()
 
@@ -29,11 +30,21 @@ tracer_provider = register(
 LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
 
 # Initialize the LLM
-llm = ChatOpenAI(
-    model_name="gpt-4",
-    temperature=0.7,
-    streaming=False,
-    api_key=os.getenv("OPENAI_API_KEY"),
+# llm = ChatOpenAI(
+#     model_name="gpt-4",
+#     temperature=0.7,
+#     streaming=False,
+#     api_key=os.getenv("OPENAI_API_KEY"),
+# )
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-1.5-pro",
+    api_key=os.getenv("GEMINI_API_KEY"),
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2,
+    # other params...
 )
 
 # Define output schemas
@@ -167,8 +178,8 @@ def create_repository(
     chain = architecture_prompt | llm | architecture_parser
 
     paper_text_input = paper_text
-    if len(paper_text) > 4096:
-        paper_text_input = paper_text[:4096]
+    # if len(paper_text) > 4096:
+    #     paper_text_input = paper_text[:4096]
 
     # Invoke the chain with all required variables
     architecture_output = chain.invoke(
